@@ -1,0 +1,11 @@
+[project]
+name = "python-slots-test"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "humanize==4.14.0",
+    "psutil==7.1.3",
+]
+
