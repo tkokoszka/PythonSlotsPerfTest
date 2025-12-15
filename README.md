@@ -2,7 +2,6 @@
 
 ## Manage deps:
 
-* uv init 
-* add deps to pyproject.toml
-* uv sync
-* uv run src/main.py
+* update deps in `pyproject.toml`
+* run `uv sync`
+* run `uv run src/main.py`

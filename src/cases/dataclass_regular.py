@@ -11,9 +11,9 @@ class User:
     age: int
 
 
-def create_dataclasses(n: int) -> list[User]:
+def create_dataclass_regular(num_instances: int) -> list[User]:
     result = []
-    for i in range(n):
+    for _ in range(num_instances):
         age = random.randint(1, 100)
         u = User(id=str(uuid4()), name=str(uuid4()), surname=str(uuid4()), age=age)
         result.append(u)
