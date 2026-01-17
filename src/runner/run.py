@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import gc
+import logging
 import time
 from dataclasses import dataclass
 
@@ -10,10 +11,13 @@ from pympler import asizeof
 from runner.run_stats import RunStats
 from scenarios.base import BaseScenario
 
+logger = logging.getLogger(__name__)
+
 
 def run_scenarios(scenarios: list[BaseScenario], num_instances: int) -> list[RunStats]:
     results = []
     for scenario in scenarios:
+        logger.info(f"Running {scenario.name}")
         results.append(run_scenario(scenario, num_instances))
     return results
 
