@@ -1,30 +1,36 @@
-from cases.class_regular import create_class_regular
-from cases.class_slots import create_class_slots
-from cases.dataclass_regular import create_dataclass_regular
-from cases.dataclass_slots import create_dataclass_slots
-from cases.pydantic import create_pydantic
-from cases.pydantic_dataclass import create_pydantic_dataclass
-from cases.pydantic_dataclass_slots import create_pydantic_dataclass_slots
-from resource_monitor.run import run_measurement
-from resource_monitor.run_config import RunConfig
+import logging
+
+from runner.run import run_scenarios
+from scenarios.base import BaseScenario
+from scenarios.pydantic_dataclass import PydanticDataclassScenario
+from scenarios.pydantic_dataclass_with_slots import PydanticDataclassWithSlotsScenario
+from scenarios.pydantic_model import PydanticModelScenario
+from scenarios.python_class import PythonClassScenario
+from scenarios.python_class_with_slots import PythonClassWithSlotsScenario
+from scenarios.python_dataclass import PythonDataclassScenario
+from scenarios.python_dataclass_with_slots import PythonDataclassWithSlotsScenario
 
 
 def main():
-    num_cycles = 1_000_000
-    configs = [
-        RunConfig(name="class_regular", fun=create_class_regular),
-        RunConfig(name="class_slots", fun=create_class_slots),
-        RunConfig(name="dataclass_regular", fun=create_dataclass_regular),
-        RunConfig(name="dataclass_slots", fun=create_dataclass_slots),
-        RunConfig(name="pydantic", fun=create_pydantic),
-        RunConfig(name="pydantic_dataclass", fun=create_pydantic_dataclass),
-        RunConfig(name="pydantic_dataclass_slots", fun=create_pydantic_dataclass_slots),
+    configure_logger()
+    scenarios: list[BaseScenario] = [
+        PythonClassScenario(),
+        PythonClassWithSlotsScenario(),
+        PythonDataclassScenario(),
+        PythonDataclassWithSlotsScenario(),
+        PydanticModelScenario(),
+        PydanticDataclassScenario(),
+        PydanticDataclassWithSlotsScenario(),
     ]
-    configs.reverse()
-    for config in configs:
-        print(f"### Running {config.name} with num_cycles={num_cycles}...")
-        stats = run_measurement(config, num_cycles=num_cycles)
-        print(stats.as_human_str())
+    run_scenarios(scenarios, 1_000)
+
+
+def configure_logger():
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
 
 
 if __name__ == "__main__":
