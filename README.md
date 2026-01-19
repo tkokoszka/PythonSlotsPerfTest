@@ -12,13 +12,20 @@ Bootstrap:
 - Install pre-commit hooks: `uv run pre-commit install`
   - It installs pre-commit from project venv, no need to install pre-commit globally
 
+## TODOs
+
+- Add scenario for TypedDict
+- Implement md_report.py
+  - generate results to reports/YYYY-MM-DD.md, use jinja2 templates
+  - have a simple table: name, metrics
+
 ## Operations
 
 #### Pre-commit hooks
 
 - Run only over staged files: `uv run pre-commit run`
 - Run over all files: `uv run pre-commit run -a`
-- When installing pre-commit hooks takes too long on windows:
+- Installing pre-commit hooks takes very long on Windows:
   - Find the cache path: `uv run python -c "from pre_commit.store import Store; print(Store().directory)"`
   - Exclude it from Windows Defender scans
   - You can remove the exclude after pre-commit env is created
