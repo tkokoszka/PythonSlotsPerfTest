@@ -8,13 +8,15 @@ from dataclasses import dataclass
 import psutil
 from pympler import asizeof
 
-from runner.run_stats import RunStats
+from models.execution_stats import ExecutionStats
 from scenarios.base import BaseScenario
 
 logger = logging.getLogger(__name__)
 
 
-def run_scenarios(scenarios: list[BaseScenario], num_instances: int) -> list[RunStats]:
+def run_scenarios(
+    scenarios: list[BaseScenario], num_instances: int
+) -> list[ExecutionStats]:
     results = []
     for scenario in scenarios:
         logger.info(f"Running {scenario.name}")
@@ -22,7 +24,7 @@ def run_scenarios(scenarios: list[BaseScenario], num_instances: int) -> list[Run
     return results
 
 
-def run_scenario(scenario: BaseScenario, num_instances: int) -> RunStats:
+def run_scenario(scenario: BaseScenario, num_instances: int) -> ExecutionStats:
     """Run scenario, collect and return stats."""
 
     # Run garbage collector to start with a clean slate and make results independent of
@@ -39,7 +41,7 @@ def run_scenario(scenario: BaseScenario, num_instances: int) -> RunStats:
 
     end_state = _current_runtime_state_snapshot()
 
-    return RunStats(
+    return ExecutionStats(
         scenario=scenario,
         num_created=len(results),
         mem_results_size_bytes=asizeof.asizeof(results),
