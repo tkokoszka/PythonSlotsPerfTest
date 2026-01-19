@@ -14,10 +14,14 @@ Bootstrap:
 
 ## Operations
 
-#### Run pre-commit hooks
+#### Pre-commit hooks
 
 - Run only over staged files: `uv run pre-commit run`
 - Run over all files: `uv run pre-commit run -a`
+- When installing pre-commit hooks takes too long on windows:
+  - Find the cache path: `uv run python -c "from pre_commit.store import Store; print(Store().directory)"`
+  - Exclude it from Windows Defender scans
+  - You can remove the exclude after pre-commit env is created
 
 #### Update deps
 
