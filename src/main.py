@@ -3,6 +3,7 @@ import logging
 from reporter.text_table import TextTableReporter
 from runner.run import run_scenarios
 from scenarios.base import BaseScenario
+from scenarios.named_tuple import NamedTupleScenario
 from scenarios.pydantic_dataclass import PydanticDataclassScenario
 from scenarios.pydantic_dataclass_with_slots import PydanticDataclassWithSlotsScenario
 from scenarios.pydantic_model import PydanticModelScenario
@@ -10,11 +11,16 @@ from scenarios.python_class import PythonClassScenario
 from scenarios.python_class_with_slots import PythonClassWithSlotsScenario
 from scenarios.python_dataclass import PythonDataclassScenario
 from scenarios.python_dataclass_with_slots import PythonDataclassWithSlotsScenario
+from scenarios.simple_namespace import SimpleNamespaceScenario
+from scenarios.typed_dict import TypedDictScenario
 
 
 def main():
     configure_logger()
     scenarios: list[BaseScenario] = [
+        NamedTupleScenario(),
+        TypedDictScenario(),
+        SimpleNamespaceScenario(),
         PythonClassScenario(),
         PythonClassWithSlotsScenario(),
         PythonDataclassScenario(),
@@ -23,7 +29,7 @@ def main():
         PydanticDataclassScenario(),
         PydanticDataclassWithSlotsScenario(),
     ]
-    executions_stats = run_scenarios(scenarios, 1_000)
+    executions_stats = run_scenarios(scenarios, 100_000)
     print(TextTableReporter().report(executions_stats))
 
 
