@@ -1,5 +1,6 @@
 import logging
 
+from reporter.text_table import TextTableReporter
 from runner.run import run_scenarios
 from scenarios.base import BaseScenario
 from scenarios.pydantic_dataclass import PydanticDataclassScenario
@@ -22,7 +23,8 @@ def main():
         PydanticDataclassScenario(),
         PydanticDataclassWithSlotsScenario(),
     ]
-    run_scenarios(scenarios, 1_000)
+    executions_stats = run_scenarios(scenarios, 1_000)
+    print(TextTableReporter().report(executions_stats))
 
 
 def configure_logger():

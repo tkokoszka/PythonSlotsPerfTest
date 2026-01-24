@@ -12,10 +12,10 @@ class ExecutionStats:
     num_created: int
 
     # Mem size of list storing all the created objects, in bytes.
-    mem_results_size_bytes: int
+    results_size_ram_bytes: int
 
     # Memory used in bytes.
-    mem_used: int
+    ram_used: int
 
     # Time elapsed (walltime).
     time_elapsed_sec: float

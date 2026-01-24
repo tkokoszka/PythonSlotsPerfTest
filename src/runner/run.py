@@ -44,8 +44,8 @@ def run_scenario(scenario: BaseScenario, num_instances: int) -> ExecutionStats:
     return ExecutionStats(
         scenario=scenario,
         num_created=len(results),
-        mem_results_size_bytes=asizeof.asizeof(results),
-        mem_used=end_state.memory_rss - start_state.memory_rss,
+        results_size_ram_bytes=asizeof.asizeof(results),
+        ram_used=end_state.memory_rss - start_state.memory_rss,
         time_elapsed_sec=end_state.walltime_sec - start_state.walltime_sec,
         cpu_user_time_sec=end_state.cpu_user_time_sec - start_state.cpu_user_time_sec,
         cpu_system_time_sec=(

@@ -15,6 +15,8 @@ Bootstrap:
 ## TODOs
 
 - Add scenario for TypedDict
+- Add scenario for NamedTuple
+- Add scenario for SimpleNamespace
 - Implement md_report.py
   - generate results to reports/YYYY-MM-DD.md, use jinja2 templates
   - have a simple table: name, metrics
