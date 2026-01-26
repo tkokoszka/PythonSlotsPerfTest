@@ -1,16 +1,23 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 
 from scenarios.base import BaseScenario
 
 
 @dataclass
-class ExecutionStats:
+class ExecutionResult:
     # Scenario that was run.
     scenario: BaseScenario
 
     # Num objects created.
     num_created: int
 
+    stats: ExecutionStats
+
+
+@dataclass
+class ExecutionStats:
     # Mem size of list storing all the created objects, in bytes.
     results_size_ram_bytes: int
 
