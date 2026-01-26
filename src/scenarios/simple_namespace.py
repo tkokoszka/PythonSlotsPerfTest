@@ -1,19 +1,11 @@
 import random
 from types import SimpleNamespace
-from typing import Protocol, cast
 from uuid import uuid4
 
 from scenarios.base import BaseScenario
 
 
-class UserProtocol(Protocol):
-    id: str
-    name: str
-    surname: str
-    age: int
-
-
-class SimpleNamespaceScenario(BaseScenario[UserProtocol]):
+class SimpleNamespaceScenario(BaseScenario[SimpleNamespace]):
     @property
     def name(self) -> str:
         return "Simple Namespace"
@@ -22,11 +14,8 @@ class SimpleNamespaceScenario(BaseScenario[UserProtocol]):
     def description(self) -> str:
         return "Python builtin SimpleNamespace."
 
-    def create_one(self, seq_no: int) -> UserProtocol:
+    def create_one(self, seq_no: int) -> SimpleNamespace:
         age = random.randint(1, 100)
-        return cast(
-            UserProtocol,
-            SimpleNamespace(
-                id=str(uuid4()), name=str(uuid4()), surname=str(uuid4()), age=age
-            ),
+        return SimpleNamespace(
+            id=str(uuid4()), name=str(uuid4()), surname=str(uuid4()), age=age
         )
