@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Literal
+from typing import Callable, Literal
 
 import humanize
 
@@ -11,30 +11,49 @@ class TextTableReporter(ExecutionReporter):
     def report(self, results: list[ExecutionResult]) -> str:
         # Column definitions.
         columns = [
-            _ColumnDef(title="No"),
-            _ColumnDef(title="Scenario", align="<"),
-            _ColumnDef(title="Res Size RAM"),
-            _ColumnDef(title="RAM Used"),
-            _ColumnDef(title="Wall Time"),
-            _ColumnDef(title="CPU User"),
-            _ColumnDef(title="CPU Sys"),
+            ColumnDef(
+                title="No",
+                extractor=lambda r: str(
+                    1 + next(i for i, x in enumerate(results) if x is r)
+                ),
+            ),
+            ColumnDef(
+                title="Scenario",  #
+                extractor=lambda r: r.scenario.name,
+                align="<",
+            ),
+            ColumnDef(
+                title="Res Size RAM",
+                extractor=lambda r: humanize.naturalsize(
+                    r.stats.results_size_ram_bytes
+                ),
+            ),
+            ColumnDef(
+                title="RAM Used",
+                extractor=lambda r: humanize.naturalsize(r.stats.ram_used),
+            ),
+            ColumnDef(
+                title="Wall Time",
+                extractor=lambda r: _format_duration(r.stats.time_elapsed_sec),
+            ),
+            ColumnDef(
+                title="CPU User",
+                extractor=lambda r: _format_duration(r.stats.cpu_user_time_sec),
+            ),
+            ColumnDef(
+                title="CPU Sys",
+                extractor=lambda r: _format_duration(r.stats.cpu_system_time_sec),
+            ),
         ]
 
         rows: list[list[str]] = []
 
         # Add data
-        for seq_no, result in enumerate(results):
-            rows.append(
-                [
-                    str(seq_no + 1),
-                    result.scenario.name,
-                    humanize.naturalsize(result.stats.results_size_ram_bytes),
-                    humanize.naturalsize(result.stats.ram_used),
-                    _format_duration(result.stats.time_elapsed_sec),
-                    _format_duration(result.stats.cpu_user_time_sec),
-                    _format_duration(result.stats.cpu_system_time_sec),
-                ]
-            )
+        for result in results:
+            col: list[str] = []
+            for column in columns:
+                col.append(column.extractor(result))
+            rows.append(col)
 
         # Calculate dynamic column widths based on max content length
         all_rows = [[c.title for c in columns]] + rows
@@ -76,10 +95,13 @@ def _format_duration(seconds: float) -> str:
     return res
 
 
-@dataclass
-class _ColumnDef:
+@dataclass(kw_only=True)
+class ColumnDef:
     # Column title, as shown to the user
     title: str
 
     # Column alignment, "<"=Left, ">""=Right.
     align: Literal["<", ">"] = ">"
+
+    # Callable that extract column value from results in a format to put in the table.
+    extractor: Callable[[ExecutionResult], str]
