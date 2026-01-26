@@ -16,11 +16,11 @@ class User(BaseModel):
 class PydanticModelScenario(BaseScenario[User]):
     @property
     def name(self) -> str:
-        return "Pydantic model"
+        return "Pydantic Model"
 
     @property
     def description(self) -> str:
-        return "Basic Pydantic model."
+        return "Pydantic Model."
 
     def create_one(self, seq_no: int) -> User:
         age = random.randint(1, 100)

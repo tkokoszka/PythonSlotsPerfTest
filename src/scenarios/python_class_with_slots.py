@@ -17,11 +17,11 @@ class User:
 class PythonClassWithSlotsScenario(BaseScenario[User]):
     @property
     def name(self) -> str:
-        return "Python class with slots"
+        return "Class with Slots"
 
     @property
     def description(self) -> str:
-        return "Basic Python class with __slots__."
+        return "Python builtin class with __slots__."
 
     def create_one(self, seq_no: int) -> User:
         age = random.randint(1, 100)

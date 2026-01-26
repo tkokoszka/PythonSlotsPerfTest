@@ -15,7 +15,7 @@ class User(NamedTuple):
 class NamedTupleScenario(BaseScenario[User]):
     @property
     def name(self) -> str:
-        return "Named tuple"
+        return "Named Tuple"
 
     @property
     def description(self) -> str:

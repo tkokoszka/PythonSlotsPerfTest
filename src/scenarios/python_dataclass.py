@@ -16,11 +16,11 @@ class User:
 class PythonDataclassScenario(BaseScenario[User]):
     @property
     def name(self) -> str:
-        return "Python dataclass"
+        return "Dataclass"
 
     @property
     def description(self) -> str:
-        return "Basic Python dataclass."
+        return "Python builtin dataclass."
 
     def create_one(self, seq_no: int) -> User:
         age = random.randint(1, 100)

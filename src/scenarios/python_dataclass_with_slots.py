@@ -16,11 +16,11 @@ class User:
 class PythonDataclassWithSlotsScenario(BaseScenario[User]):
     @property
     def name(self) -> str:
-        return "Python dataclass with slots"
+        return "Dataclass with Slots"
 
     @property
     def description(self) -> str:
-        return "Basic Python dataclass with slots=True."
+        return "Python builtin dataclass with slots=True."
 
     def create_one(self, seq_no: int) -> User:
         age = random.randint(1, 100)

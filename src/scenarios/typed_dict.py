@@ -15,7 +15,7 @@ class User(TypedDict):
 class TypedDictScenario(BaseScenario[User]):
     @property
     def name(self) -> str:
-        return "Typed dict"
+        return "Typed Dict"
 
     @property
     def description(self) -> str:

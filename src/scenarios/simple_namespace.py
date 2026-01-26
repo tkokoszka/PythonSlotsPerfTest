@@ -16,7 +16,7 @@ class UserProtocol(Protocol):
 class SimpleNamespaceScenario(BaseScenario[UserProtocol]):
     @property
     def name(self) -> str:
-        return "SimpleNamespace"
+        return "Simple Namespace"
 
     @property
     def description(self) -> str:
