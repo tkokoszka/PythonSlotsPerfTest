@@ -29,13 +29,6 @@ uv run python src/main.py -n 1000 -t 4  # custom instance and trials count
 uv run python src/main.py --help        # show all options
 ```
 
-## TODOs
-
-- Report in a comparison matrix all to all diff
-- Implement md_report.py
-  - generate results to reports/YYYY-MM-DD.md, use jinja2 templates
-  - have a simple table: name, metrics
-
 ## Operations
 
 #### Setup

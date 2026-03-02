@@ -5,7 +5,8 @@
       "Bash(uv sync)",
       "Bash(uv run python src/main.py)",
       "Bash(uv run python src/main.py -n 1000 -t 2)",
-      "Bash(uv run python src/main.py -n 1000)"
+      "Bash(uv run python src/main.py -n 1000)",
+      "Bash(uv run python src/main.py -n 1000 -t 1)"
     ]
   }
 }
