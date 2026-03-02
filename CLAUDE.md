@@ -9,10 +9,11 @@ Python benchmarking tool comparing memory and CPU cost of different data structu
 - Python >=3.13, managed with `uv`
 - Run: `uv run python src/main.py`
 - Linting/formatting: ruff (format + lint with --fix)
-- Type checking: pyright (standard mode)
+- Type checking: pyright (standard mode) — **not in project deps**, only available through pre-commit
 - Spelling: codespell (auto-fix with -w)
 - Pre-commit runs all of the above
 - Run pre-commit over all files: `uv run pre-commit run -a`
+- **Always run checks via pre-commit**, never standalone (e.g. `uv run pyright` will fail)
 
 ## Code style
 
