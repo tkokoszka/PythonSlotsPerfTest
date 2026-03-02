@@ -24,14 +24,13 @@ Benchmarking tool that measures memory and CPU cost of creating hundreds of thou
 ## Running
 
 ```bash
-uv run python src/main.py            # default: 100,000 instances
-uv run python src/main.py -n 1000    # custom instance count
-uv run python src/main.py --help     # show all options
+uv run python src/main.py
+uv run python src/main.py -n 1000 -t 4  # custom instance and trials count
+uv run python src/main.py --help        # show all options
 ```
 
 ## TODOs
 
-- Run 10 times, collect avg, min, max, std_dev
 - Report in a comparison matrix all to all diff
 - Implement md_report.py
   - generate results to reports/YYYY-MM-DD.md, use jinja2 templates

@@ -8,23 +8,13 @@ from dataclasses import dataclass
 
 from pympler import asizeof
 
-from models.execution_result import ExecutionResult, ExecutionStats
+from models.execution_result import ExecutionStats
 from scenarios.base import BaseScenario
 
 logger = logging.getLogger(__name__)
 
 
-def run_scenarios(
-    scenarios: list[BaseScenario], num_instances: int
-) -> list[ExecutionResult]:
-    results = []
-    for scenario in scenarios:
-        logger.info(f"Running {scenario.name}")
-        results.append(run_scenario(scenario, num_instances))
-    return results
-
-
-def run_scenario(scenario: BaseScenario, num_instances: int) -> ExecutionResult:
+def run_scenario(scenario: BaseScenario, num_instances: int) -> ExecutionStats:
     """Run scenario, collect and return stats."""
 
     # Run garbage collector to start with a clean slate and make results independent of
@@ -49,15 +39,11 @@ def run_scenario(scenario: BaseScenario, num_instances: int) -> ExecutionResult:
     _, tracemalloc_peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
 
-    return ExecutionResult(
-        scenario=scenario,
-        num_created=len(results),
-        stats=ExecutionStats(
-            results_size_ram_bytes=asizeof.asizeof(results),
-            ram_used=tracemalloc_peak,
-            time_elapsed_sec=end_state.walltime_sec - start_state.walltime_sec,
-            cpu_time_sec=end_state.cpu_time_sec - start_state.cpu_time_sec,
-        ),
+    return ExecutionStats(
+        results_size_ram_bytes=asizeof.asizeof(results),
+        ram_used=tracemalloc_peak,
+        time_elapsed_sec=end_state.walltime_sec - start_state.walltime_sec,
+        cpu_time_sec=end_state.cpu_time_sec - start_state.cpu_time_sec,
     )
 
 
