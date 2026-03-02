@@ -1,16 +1,18 @@
-# Data object in Python
+# Data Objects in Python - Performance Benchmark
 
-## Setup
+Benchmarking tool that measures memory and CPU cost of creating hundreds of thousands objects using different Python data structure approaches.
 
-Pre-requisites:
+## Measured Metrics
 
-- uv tool - [Astral uv](https://docs.astral.sh/uv/)
+- **Object Size** - deep memory footprint of all created objects
+- **RAM Used** - process RSS delta during execution
+- **CPU User / System Time** - CPU time in user and kernel space
 
-Bootstrap:
+## Running
 
-- Create venv, install all deps: `uv sync --frozen`
-- Install pre-commit hooks: `uv run pre-commit install`
-  - It installs pre-commit from project venv, no need to install pre-commit globally
+```bash
+uv run python src/main.py
+```
 
 ## TODOs
 
@@ -21,6 +23,18 @@ Bootstrap:
   - have a simple table: name, metrics
 
 ## Operations
+
+#### Setup
+
+Pre-requisites:
+
+- uv tool - [Astral uv](https://docs.astral.sh/uv/)
+
+Bootstrap:
+
+- Create venv, install all deps: `uv sync --frozen`
+- Install pre-commit hooks: `uv run pre-commit install`
+  - It installs pre-commit from project venv, no need to install pre-commit globally
 
 #### Pre-commit hooks
 
