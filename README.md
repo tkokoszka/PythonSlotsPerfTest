@@ -2,12 +2,6 @@
 
 Benchmarking tool that measures memory and CPU cost of creating hundreds of thousands objects using different Python data structure approaches.
 
-## Measured Metrics
-
-- **Results Size RAM** - deep memory footprint of all created objects
-- **RAM Used** - process RSS delta during execution
-- **CPU User / System Time** - CPU time in user and kernel space
-
 ## Scenarios
 
 - Python class
@@ -20,6 +14,53 @@ Benchmarking tool that measures memory and CPU cost of creating hundreds of thou
 - Pydantic Model
 - Pydantic Dataclass
 - Pydantic Dataclass with `slots=True`
+
+## Measurements
+
+Each scenario is run multiple times (trials). Per-trial results are aggregated using the mean. Four metrics are collected per trial:
+
+### Result Size RAM
+
+Deep memory footprint of all created objects. Walks the full object graph recursively and sums the size of every reachable Python object (via `pympler.asizeof`).
+
+Answers the question: **how much memory do these objects intrinsically occupy?**
+
+- (+) Deterministic and reproducible — not affected by GC state, allocator behavior, or system load
+- (+) Directly measures the data structure cost, making it the best metric for comparing object layouts
+- (-) Blind to allocator overhead and memory fragmentation — the OS-level cost may be higher.
+  - In practice this matters little: all scenarios allocate the same number of objects in the same loop, so allocator overhead is roughly proportional and cancels out in relative comparisons
+
+### RAM Used
+
+Peak memory allocated by CPython's memory allocator during the scenario, tracked via `tracemalloc`.
+
+Answers the question: **how much memory did Python actually allocate, including overhead?**
+
+- (+) Captures real allocator behavior — arena overhead, internal bookkeeping, temporary allocations
+- (+) Peak tracking catches short-lived allocations that are freed before the scenario ends
+- (-) Peak can be inflated by transient temporaries unrelated to the final objects
+
+### CPU Time
+
+Time the CPU spent executing this process's code in both user mode and kernel mode (`time.process_time`).
+
+Answers the question: **how much computational work does this require?**
+
+- (+) Much less noisy than wall time — immune to system load and scheduling jitter
+- (+) Best metric for comparing raw computational cost between scenarios
+- (-) Kernel-mode time component can vary between OS versions.
+  - In practice this matters little: this benchmark is CPU-bound pure Python with no syscalls in the hot loop, so virtually all measured time is user-mode
+
+### Wall Time
+
+Elapsed real-world time from start to finish, measured with a high-resolution monotonic clock (`time.perf_counter`).
+
+Answers the question: **how long does it actually take?**
+
+- (+) Represents what a user would experience end-to-end
+- (+) Captures all sources of delay — CPU, I/O, scheduling
+- (-) Noisy — affected by other processes, OS scheduling, and background activity.
+- (-) Least reproducible metric; requires many trials to stabilize
 
 ## Running
 
@@ -42,6 +83,8 @@ Run with `uv run python src/main.py -n 100000 -t 10` (100,000 objects, 10 trials
 - **Pydantic Dataclasses are CPU-expensive** — over 2x the CPU time of plain classes/dataclasses, even though Pydantic DC with Slots matches them on memory.
 - **Non-Pydantic stdlib types are fast** — Class, Dataclass, NamedTuple, TypedDict, SimpleNamespace all fall within a tight ~10% CPU range. The choice among them is about memory, not speed.
 - **Dict-backed types cost more memory** — TypedDict (+10%) and SimpleNamespace (+22%) sit between plain classes and Pydantic.
+
+#### Results
 
 | No  | Scenario                       | Res Size RAM | RAM Used | Wall Time | CPU Time |
 |-----|--------------------------------|--------------|----------|-----------|----------|
