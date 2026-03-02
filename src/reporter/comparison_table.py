@@ -17,9 +17,9 @@ class ComparisonTableReporter(ExecutionReporter):
         self._field_name = self._valid_field_name_on_raise(field_name)
 
     def _valid_field_name_on_raise(self, field_name: str) -> str:
-        valid_filed_names = {f.name for f in dataclasses.fields(ExecutionStats)}
-        if field_name not in valid_filed_names:
-            valid = ", ".join(valid_filed_names)
+        valid_field_names = {f.name for f in dataclasses.fields(ExecutionStats)}
+        if field_name not in valid_field_names:
+            valid = ", ".join(valid_field_names)
             raise ValueError(f"Unknown field {field_name!r}. Valid fields: {valid}")
         return field_name
 
@@ -32,6 +32,8 @@ class ComparisonTableReporter(ExecutionReporter):
         for name, row_val in zip(names, values):
             row: list[str] = [name]
             for col_val in values:
+                # Identity check (not ==): detect diagonal (same scenario),
+                # while showing "+0.0%" when different scenarios share a value.
                 if row_val is col_val:
                     row.append("-")
                 elif col_val == 0:
