@@ -1,6 +1,3 @@
-import random
-from uuid import uuid4
-
 from pydantic import BaseModel
 
 from scenarios.base import BaseScenario
@@ -22,6 +19,5 @@ class PydanticModelScenario(BaseScenario[User]):
     def description(self) -> str:
         return "Pydantic Model."
 
-    def create_one(self, seq_no: int) -> User:
-        age = random.randint(1, 100)
-        return User(id=str(uuid4()), name=str(uuid4()), surname=str(uuid4()), age=age)
+    def construct_one(self, *, id: str, name: str, surname: str, age: int) -> User:
+        return User(id=id, name=name, surname=surname, age=age)

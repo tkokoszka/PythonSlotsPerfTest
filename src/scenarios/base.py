@@ -1,5 +1,7 @@
+import random
 from abc import ABC, abstractmethod
 from typing import Generic, TypeVar
+from uuid import uuid4
 
 T = TypeVar("T")
 
@@ -21,6 +23,10 @@ class BaseScenario(ABC, Generic[T]):
         pass
 
     @abstractmethod
+    def construct_one(self, *, id: str, name: str, surname: str, age: int) -> T:
+        """Construct a single instance of the test object from pre-generated values."""
+        pass
+
     def create_one(self, seq_no: int) -> T:
         """Create a single instance of test object for this scenario.
 
@@ -28,4 +34,9 @@ class BaseScenario(ABC, Generic[T]):
             seq_no: sequence number (from 0), when creating series of objects.
                     Can be used to seed data, e.g. be part of name.
         """
-        pass
+        return self.construct_one(
+            id=str(uuid4()),
+            name=str(uuid4()),
+            surname=str(uuid4()),
+            age=random.randint(1, 100),
+        )
