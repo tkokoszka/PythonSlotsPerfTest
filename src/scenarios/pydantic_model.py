@@ -1,16 +1,16 @@
 import random
 from uuid import uuid4
 
-from pydantic import BaseModel, Field, PositiveInt
+from pydantic import BaseModel
 
 from scenarios.base import BaseScenario
 
 
 class User(BaseModel):
-    id: str = Field(..., description="Unique identifier for the user")
-    name: str = Field(..., description="First name of the user")
-    surname: str = Field(..., description="Last name of the user")
-    age: PositiveInt = Field(..., description="Age of the user (must be positive)")
+    id: str
+    name: str
+    surname: str
+    age: int
 
 
 class PydanticModelScenario(BaseScenario[User]):

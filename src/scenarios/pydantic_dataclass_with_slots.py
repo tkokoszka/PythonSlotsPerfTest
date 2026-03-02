@@ -1,7 +1,6 @@
 import random
 from uuid import uuid4
 
-from pydantic import Field, PositiveInt
 from pydantic.dataclasses import dataclass as pydantic_dataclass
 
 from scenarios.base import BaseScenario
@@ -9,10 +8,10 @@ from scenarios.base import BaseScenario
 
 @pydantic_dataclass(slots=True)
 class User:
-    id: str = Field(..., description="Unique identifier for the user")
-    name: str = Field(..., description="First name of the user")
-    surname: str = Field(..., description="Last name of the user")
-    age: PositiveInt = Field(..., description="Age of the user (must be positive)")
+    id: str
+    name: str
+    surname: str
+    age: int
 
 
 class PydanticDataclassWithSlotsScenario(BaseScenario[User]):
