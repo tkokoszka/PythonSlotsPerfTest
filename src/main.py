@@ -37,6 +37,7 @@ def main() -> None:
     )
     print(ResultsTableReporter().report(executions_stats))
     print(ComparisonTableReporter("results_size_ram_bytes").report(executions_stats))
+    print(ComparisonTableReporter("cpu_time_sec").report(executions_stats))
 
 
 if __name__ == "__main__":
