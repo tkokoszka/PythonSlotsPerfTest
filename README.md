@@ -4,9 +4,22 @@ Benchmarking tool that measures memory and CPU cost of creating hundreds of thou
 
 ## Measured Metrics
 
-- **Object Size** - deep memory footprint of all created objects
+- **Results Size RAM** - deep memory footprint of all created objects
 - **RAM Used** - process RSS delta during execution
 - **CPU User / System Time** - CPU time in user and kernel space
+
+## Scenarios
+
+- Python class
+- Python class with `__slots__`
+- Dataclass
+- Dataclass with `slots=True`
+- NamedTuple
+- TypedDict
+- SimpleNamespace
+- Pydantic Model
+- Pydantic Dataclass
+- Pydantic Dataclass with `slots=True`
 
 ## Running
 
