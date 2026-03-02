@@ -8,7 +8,7 @@ Python benchmarking tool comparing memory and CPU cost of different data structu
 
 - Python >=3.13, managed with `uv`
 - Run: `uv run python src/main.py`
-- Quick test run: `uv run python src/main.py -n 1000` (use this when testing changes)
+- Quick test run: `uv run python src/main.py -n 1000 -t 2` (use this when testing changes)
 - Linting/formatting: ruff (format + lint with --fix)
 - Type checking: pyright (standard mode) — **not in project deps**, only available through pre-commit
 - Spelling: codespell (auto-fix with -w)

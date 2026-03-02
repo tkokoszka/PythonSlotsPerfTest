@@ -3,7 +3,7 @@ import argparse
 from all_scenarios import ALL_SCENARIOS
 from log import configure_logger
 from reporter.comparison_table import ComparisonTableReporter
-from reporter.text_table import TextTableReporter
+from reporter.results_table import ResultsTableReporter
 from runner.run_with_trials import run_scenarios_with_trials
 
 
@@ -35,7 +35,7 @@ def main() -> None:
     executions_stats = run_scenarios_with_trials(
         ALL_SCENARIOS, args.num_instances, args.trials
     )
-    print(TextTableReporter().report(executions_stats))
+    print(ResultsTableReporter().report(executions_stats))
     print(ComparisonTableReporter("results_size_ram_bytes").report(executions_stats))
 
 

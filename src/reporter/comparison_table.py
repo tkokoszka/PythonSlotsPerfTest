@@ -1,9 +1,8 @@
 import dataclasses
-from dataclasses import dataclass
-from typing import Literal
 
 from models.execution_result import ExecutionResult, ExecutionStats
 from reporter.base import ExecutionReporter
+from reporter.table_formatter import ColumnDef, render_table
 
 
 class ComparisonTableReporter(ExecutionReporter):
@@ -15,20 +14,23 @@ class ComparisonTableReporter(ExecutionReporter):
     """
 
     def __init__(self, field_name: str) -> None:
+        self._field_name = self._valid_field_name_on_raise(field_name)
+
+    def _valid_field_name_on_raise(self, field_name: str) -> str:
         valid_filed_names = {f.name for f in dataclasses.fields(ExecutionStats)}
         if field_name not in valid_filed_names:
             valid = ", ".join(valid_filed_names)
             raise ValueError(f"Unknown field {field_name!r}. Valid fields: {valid}")
-        self._field_name = field_name
+        return field_name
 
     def report(self, results: list[ExecutionResult]) -> str:
-        scenario_names = [r.scenario.name for r in results]
+        names = [r.scenario.name for r in results]
         values = [getattr(r.stats, self._field_name) for r in results]
 
-        # Build cell strings: rows = "from", columns = "to" (baseline).
-        cells: list[list[str]] = []
-        for row_val in values:
-            row: list[str] = []
+        # Build table rows: rows = "from", columns = "to" (baseline).
+        rows: list[list[str]] = []
+        for name, row_val in zip(names, values):
+            row: list[str] = [name]
             for col_val in values:
                 if row_val is col_val:
                     row.append("-")
@@ -37,34 +39,12 @@ class ComparisonTableReporter(ExecutionReporter):
                 else:
                     pct = (row_val - col_val) / col_val * 100
                     row.append(f"{pct:+.1f}%")
-            cells.append(row)
+            rows.append(row)
 
-        # Column definitions: first column is the row label, rest are scenario names.
         columns = [
-            _ColumnDef(title="", align="<"),
-            *[_ColumnDef(title=name) for name in scenario_names],
+            ColumnDef(title="", align="<"),
+            *[ColumnDef(title=name, align="^") for name in names],
         ]
+        table = render_table(columns, rows)
 
-        # Merge header titles + data for width calculation.
-        all_rows = [[c.title for c in columns]]
-        for name, row in zip(scenario_names, cells):
-            all_rows.append([name, *row])
-
-        col_widths = [max(len(r[i]) for r in all_rows) for i in range(len(columns))]
-
-        row_fmt = " | ".join(f"{{:{c.align}{w}}}" for c, w in zip(columns, col_widths))
-
-        lines: list[str] = []
-        lines.append(row_fmt.format(*[c.title for c in columns]))
-        lines.append("-" * (sum(col_widths) + 3 * (len(columns) - 1)))
-        for name, row in zip(scenario_names, cells):
-            lines.append(row_fmt.format(name, *row))
-
-        return f"Comparison: {self._field_name}\n" + "\n".join(lines)
-
-
-@dataclass(kw_only=True)
-class _ColumnDef:
-    title: str
-    # Column alignment: "<" left, ">" right, "^" center.
-    align: Literal["<", ">", "^"] = "^"
+        return f"Comparison: {self._field_name}\n{table}"
