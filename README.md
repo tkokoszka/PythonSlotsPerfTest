@@ -17,9 +17,11 @@ Benchmarking tool that measures memory and CPU cost of creating hundreds of thou
 
 ## Measurements
 
-Each scenario is run multiple times (trials). Per-trial results are aggregated using the mean. Four metrics are collected per trial:
+Each scenario is run multiple times (trials). Per-trial results are aggregated using the mean. Four metrics are collected per trial.
 
-### Result Size RAM
+**Result Size RAM** and **CPU Time** are the primary metrics for comparison; other metrics are included for completeness and validation.
+
+### Result Size RAM *(primary)*
 
 Deep memory footprint of all created objects. Walks the full object graph recursively and sums the size of every reachable Python object (via `pympler.asizeof`).
 
@@ -40,7 +42,7 @@ Answers the question: **how much memory did Python actually allocate, including 
 - (+) Peak tracking catches short-lived allocations that are freed before the scenario ends
 - (-) Peak can be inflated by transient temporaries unrelated to the final objects
 
-### CPU Time
+### CPU Time *(primary)*
 
 Time the CPU spent executing this process's code in both user mode and kernel mode (`time.process_time`).
 
