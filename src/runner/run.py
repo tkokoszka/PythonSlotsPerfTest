@@ -30,7 +30,15 @@ def run_scenario(scenario: BaseScenario, num_instances: int) -> ExecutionStats:
     # Run the scenario.
     results = []
     for seq_no in range(num_instances):
-        instance = scenario.create_one(seq_no)
+        # Data preparation — keep this lightweight so it doesn't mask the
+        # resource usage of the object construction below.
+        id = str(seq_no)
+        name = f"Name {seq_no}"
+        surname = f"Surname {seq_no}"
+        age = seq_no % 79 + 21
+
+        # Object construction — this is what we're measuring.
+        instance = scenario.construct_one(id=id, name=name, surname=surname, age=age)
         results.append(instance)
 
     end_state = _current_runtime_state_snapshot()
