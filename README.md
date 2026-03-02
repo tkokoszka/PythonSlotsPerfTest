@@ -33,7 +33,7 @@ uv run python src/main.py --help        # show all options
 
 ### 2026-03-02
 
-Run with `uv run python src/main.py -n 100000 -t 10` (100,000 objects, 10 trials, median values).
+Run with `uv run python src/main.py -n 100000 -t 10` (100,000 objects, 10 trials, mean values).
 
 #### Summary
 
