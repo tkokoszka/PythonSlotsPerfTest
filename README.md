@@ -24,7 +24,9 @@ Benchmarking tool that measures memory and CPU cost of creating hundreds of thou
 ## Running
 
 ```bash
-uv run python src/main.py
+uv run python src/main.py            # default: 100,000 instances
+uv run python src/main.py -n 1000    # custom instance count
+uv run python src/main.py --help     # show all options
 ```
 
 ## TODOs
