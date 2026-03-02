@@ -21,7 +21,7 @@ class ExecutionStats:
     # Mem size of list storing all the created objects, in bytes.
     results_size_ram_bytes: int
 
-    # Memory used in bytes.
+    # Peak memory allocated during scenario run (tracemalloc), in bytes.
     ram_used: int
 
     # Time elapsed (walltime).
