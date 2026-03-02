@@ -13,13 +13,13 @@ class TextListReporter(ExecutionReporter):
             reports.append(self._report_single(seq_no, result))
         return "\n".join(reports)
 
-    def _report_single(self, seq_no: int, result: ExecutionResult):
+    def _report_single(self, seq_no: int, result: ExecutionResult) -> str:
         lines = [
             "-" * 40,
             f"{seq_no + 1:02}: {result.scenario.name}",
             f"  objects created: {humanize.intcomma(result.num_created)}",
             f"  objects size in RAM: {humanize.naturalsize(result.stats.results_size_ram_bytes)}",
-            f"  start/End RAM Used:  {humanize.naturalsize(result.stats.ram_used)}",
+            f"  RAM used:            {humanize.naturalsize(result.stats.ram_used)}",
             f"  wall time:       {humanize.precisedelta(timedelta(seconds=result.stats.time_elapsed_sec))}",
             f"  CPU user time:   {humanize.precisedelta(timedelta(seconds=result.stats.cpu_user_time_sec))}",
             f"  CPU system time: {humanize.precisedelta(timedelta(seconds=result.stats.cpu_system_time_sec))}",

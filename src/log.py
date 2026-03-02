@@ -1,7 +1,7 @@
 import logging
 
 
-def configure_logger():
+def configure_logger() -> None:
     logging.basicConfig(
         level=logging.INFO,
         # %(levelname).1s takes the first character of the level name (I, W, E, etc.)

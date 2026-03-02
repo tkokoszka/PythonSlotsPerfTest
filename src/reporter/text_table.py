@@ -100,7 +100,7 @@ class ColumnDef:
     # Column title, as shown to the user
     title: str
 
-    # Column alignment, "<"=Left, ">""=Right.
+    # Column alignment, "<"=Left, ">"=Right.
     align: Literal["<", ">"] = ">"
 
     # Callable that extract column value from results in a format to put in the table.
