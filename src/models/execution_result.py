@@ -27,8 +27,5 @@ class ExecutionStats:
     # Time elapsed (walltime).
     time_elapsed_sec: float
 
-    # CPU user time.
-    cpu_user_time_sec: float
-
-    # CPU system time.
-    cpu_system_time_sec: float
+    # CPU time (user + system), in seconds.
+    cpu_time_sec: float

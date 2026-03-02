@@ -6,7 +6,6 @@ import time
 import tracemalloc
 from dataclasses import dataclass
 
-import psutil
 from pympler import asizeof
 
 from models.execution_result import ExecutionResult, ExecutionStats
@@ -57,28 +56,19 @@ def run_scenario(scenario: BaseScenario, num_instances: int) -> ExecutionResult:
             results_size_ram_bytes=asizeof.asizeof(results),
             ram_used=tracemalloc_peak,
             time_elapsed_sec=end_state.walltime_sec - start_state.walltime_sec,
-            cpu_user_time_sec=end_state.cpu_user_time_sec
-            - start_state.cpu_user_time_sec,
-            cpu_system_time_sec=(
-                end_state.cpu_system_time_sec - start_state.cpu_system_time_sec
-            ),
+            cpu_time_sec=end_state.cpu_time_sec - start_state.cpu_time_sec,
         ),
     )
 
 
 def _current_runtime_state_snapshot() -> _RuntimeState:
-    p = psutil.Process()
-    cpu = p.cpu_times()
-
     return _RuntimeState(
         walltime_sec=time.perf_counter(),
-        cpu_user_time_sec=cpu.user,
-        cpu_system_time_sec=cpu.system,
+        cpu_time_sec=time.process_time(),
     )
 
 
 @dataclass(slots=True)
 class _RuntimeState:
     walltime_sec: float
-    cpu_user_time_sec: float
-    cpu_system_time_sec: float
+    cpu_time_sec: float

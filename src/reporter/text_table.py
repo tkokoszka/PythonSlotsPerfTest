@@ -37,12 +37,8 @@ class TextTableReporter(ExecutionReporter):
                 extractor=lambda r: _format_duration(r.stats.time_elapsed_sec),
             ),
             ColumnDef(
-                title="CPU User",
-                extractor=lambda r: _format_duration(r.stats.cpu_user_time_sec),
-            ),
-            ColumnDef(
-                title="CPU Sys",
-                extractor=lambda r: _format_duration(r.stats.cpu_system_time_sec),
+                title="CPU Time",
+                extractor=lambda r: _format_duration(r.stats.cpu_time_sec),
             ),
         ]
 

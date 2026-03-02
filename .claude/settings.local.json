@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(uv run pre-commit run -a)"
+      "Bash(uv run pre-commit run -a)",
+      "Bash(uv sync)",
+      "Bash(uv run python src/main.py)"
     ]
   }
 }
